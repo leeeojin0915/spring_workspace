@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Dept"><!--아무거나 적어도되지만 VO를 따라서 작성하자 -->
+	<!--쿼리결과와 객체간 매핑을 자동으로 하는 것이 아니라 개발자가 주도하여 처리를 하고 싶을 때는 별도의 매핑을 선언 매핑의 커스터 
+		마이징 -->
+	<resultMap id="deptJoinEmp" type="Dept">
+		<id column="deptno" property="deptno" /><!--primary key -->
+		<result column="dname" property="dname" />
+		<result column="loc" property="loc" />
+		<collection column="deptno" property="empList" javaType="java.util.List" ofType="Emp" select="Emp.select"></collection>
+	</resultMap>
+		<!--collection 부모객체가 자식객체를 집합형으로 보유한 상태
+			association 자식객체가 부모객체를 1:1로 보유
+		-->
+
+	<select id="selectAll" resultMap="deptJoinEmp">
+		select deptno,deptno, dname,loc from dept
+	</select>
+	
+	<!--부서정보 1건가져오기 -->
+	<select id="selectById" parameterType="int" resultType="Dept">
+		select * from dept where deptno=#{deptno}
+	</select>
+</mapper>
